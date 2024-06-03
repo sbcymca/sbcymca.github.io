@@ -3486,7 +3486,7 @@ a[href*='tel'], a[href*='mailto'] {
 }
 
 .score-image img {
-	max-width: 25%;
+	/* max-width: 25%; */
 }
 
 @media (min-width: 480px) {
@@ -15731,4 +15731,9 @@ html:not(.ie-11):not(.ios) .parallax-disabled {
 
 .search_link:hover {
 	color: #2d2d2d;
+}
+
+.owl-item .mb-3 img{
+	width:200px;
+	height:200px;
 }
