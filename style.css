@@ -612,9 +612,12 @@ img {
 .bg-default .slider-widget {
 	background: #F9F9F9;
 }
-
+.bg-gray-100 *{
+	color:#fff!important;
+}
 .bg-gray-100 {
-	background-color: #F9F9F9;
+	/* background-color: #F9F9F9; */
+	background-color: #0a0a0a;
 	fill: #F9F9F9;
 }
 
