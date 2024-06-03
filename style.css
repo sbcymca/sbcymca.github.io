@@ -431,6 +431,9 @@ img {
 .preloader-inner {
 	display: inline-block;
 	position: relative;
+	background-image:url(images/sbc-logo-43-36.png);
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .preloader-svg {
@@ -4089,6 +4092,17 @@ a[href*='tel'], a[href*='mailto'] {
 	}
 }
 
+@media(max-width:1199px){
+	.logo-inverse{
+		width:auto;
+		height:36px!important;
+	}
+	.rd-navbar-panel{
+		justify-content:space-between;
+		padding-right:15px!important;
+	}
+}
+
 @media (min-width: 992px) and (max-width: 1199px) {
 	.thumbnail-classic.unit-md-horizontal {
 		text-align: left;
@@ -4648,7 +4662,8 @@ mark,
 	content: '+';
 	color: #ffffff;
 	font-size: 60px;
-	background-color: rgba(57, 84, 108, 0.8);
+	/* background-color: rgba(57, 84, 108, 0.8); */
+	background-color: rgba(0, 0, 0, 0.5);
 	pointer-events: none;
 }
 
@@ -5016,8 +5031,10 @@ mark,
 		padding-bottom: 150px;
 	}
 	.section-header {
-		padding-top: 150px;
-		padding-bottom: 150px;
+		/* padding-top: 150px;
+		padding-bottom: 150px; */
+		padding-top: 300px;
+		padding-bottom: 300px;
 	}
 }
 
