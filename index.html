@@ -272,60 +272,69 @@
             let standingsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Standings?key=${apiKey}`;
     
             async function fetchScores() {
-                try {
-                    let response = await fetch(scoresUrl);
-                    let data = await response.json();
-                    let values = data.values;
-                    let container = document.getElementById("gamesContainer");
-                    let groupedGames = {};
-    
-                    container.innerHTML = ""; // Clear old scores before updating
-    
-                    for (let i = 1; i < values.length; i++) {
-                        let gameDate = values[i][0];
-                        let team1 = values[i][1];
-                        let score1 = values[i][3];
-                        let team2 = values[i][4];
-                        let score2 = values[i][6];
-                        let bestPlayer = values[i][7];
-                        let points = values[i][8];
-                        let logo1 = values[i][2] ? values[i][2] : "/images/sbc-logo.png";
-                        let logo2 = values[i][5] ? values[i][5] : "/images/sbc-logo.png";
-    
-                        let gameCard = `
-                            <div class="game-card mb-5">
-                                <div class="teams row">
-                                    <div class="team col-5">
-                                        <img class="team-logo" src="${logo1}" alt="${team1} Logo">
-                                        <p class="team-name">${team1}</p>
-                                    </div>
-                                    <span class="vs col-2">VS</span>
-                                    <div class="team col-5">
-                                        <img class="team-logo" src="${logo2}" alt="${team2} Logo">
-                                        <p class="team-name">${team2}</p>
-                                    </div>
-                                </div>
-                                <div class="scores">${score1} - ${score2}</div>
-                                <div class="best-player">Best Player: 
-                                    <strong style="color:#FE9738!important;">${bestPlayer} (${points} PTS)</strong>
-                                </div>
-                            </div>
-                        `;
-    
-                        if (!groupedGames[gameDate]) {
-                            groupedGames[gameDate] = [];
-                        }
-                        groupedGames[gameDate].push(gameCard);
-                    }
-    
-                    for (let date in groupedGames) {
-                        container.innerHTML += `<h2 class="pt-5">${date}</h2>`;
-                        container.innerHTML += groupedGames[date].join("");
-                    }
-                } catch (error) {
-                    console.error("Error fetching game scores:", error);
-                }
+    try {
+        let response = await fetch(scoresUrl);
+        let data = await response.json();
+        let values = data.values;
+        let container = document.getElementById("gamesContainer");
+        let groupedGames = [];
+
+        container.innerHTML = ""; // Clear old scores before updating
+
+        for (let i = 1; i < values.length; i++) {
+            let gameDate = values[i][0];
+            let team1 = values[i][1];
+            let score1 = values[i][3];
+            let team2 = values[i][4];
+            let score2 = values[i][6];
+            let bestPlayer = values[i][7];
+            let points = values[i][8];
+            let logo1 = values[i][2] ? values[i][2] : "/images/sbc-logo.png";
+            let logo2 = values[i][5] ? values[i][5] : "/images/sbc-logo.png";
+
+            // Convert gameDate to a Date object for sorting
+            let dateObj = new Date(gameDate);
+
+            let gameCard = `
+                <div class="game-card mb-5">
+                    <div class="teams row">
+                        <div class="team col-5">
+                            <img class="team-logo" src="${logo1}" alt="${team1} Logo">
+                            <p class="team-name">${team1}</p>
+                        </div>
+                        <span class="vs col-2">VS</span>
+                        <div class="team col-5">
+                            <img class="team-logo" src="${logo2}" alt="${team2} Logo">
+                            <p class="team-name">${team2}</p>
+                        </div>
+                    </div>
+                    <div class="scores">${score1} - ${score2}</div>
+                    <div class="best-player">Best Player: 
+                        <strong style="color:#FE9738!important;">${bestPlayer} (${points} PTS)</strong>
+                    </div>
+                </div>
+            `;
+
+            groupedGames.push({ date: dateObj, gameDate, gameCard });
+        }
+
+        // 🔹 Sort the games by date (latest to oldest)
+        groupedGames.sort((a, b) => b.date - a.date);
+
+        // Append games in sorted order
+        let lastDate = "";
+        groupedGames.forEach(game => {
+            if (game.gameDate !== lastDate) {
+                container.innerHTML += `<h2 class="pt-5">${game.gameDate}</h2>`;
+                lastDate = game.gameDate;
             }
+            container.innerHTML += game.gameCard;
+        });
+    } catch (error) {
+        console.error("Error fetching game scores:", error);
+    }
+}
+
     
             async function fetchStandings() {
                 try {
