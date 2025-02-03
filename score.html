@@ -245,27 +245,26 @@
 
 
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="core.js"></script>
     <script src="script.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        $(document).ready(function () {
             let sheetID = "1Ogo5U1m2krVN9FyPXyhRNBIwpgC4_0PVcGQmnTPaV40"; 
             let apiKey = "AIzaSyDIUxdcZMFwg_RwRc-vF5C5uEAt_xn9gu0";  
             let scoresUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Games?key=${apiKey}`;
             let standingsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Standings?key=${apiKey}`;
     
-            async function fetchScores() {
-                try {
-                    let response = await fetch(scoresUrl);
-                    let data = await response.json();
+            function fetchScores() {
+                $.getJSON(scoresUrl, function (data) {
                     let values = data.values;
-                    let container = document.getElementById("gamesContainer");
+                    let container = $("#gamesContainer");
                     let groupedGames = {};
     
-                    container.innerHTML = ""; // Clear old scores before updating
+                    container.empty(); // Clear old scores before updating
     
+                    // Group games by date
                     for (let i = 1; i < values.length; i++) {
                         let gameDate = values[i][0];
                         let team1 = values[i][1];
@@ -274,8 +273,8 @@
                         let score2 = values[i][4];
                         let bestPlayer = values[i][5];
                         let points = values[i][6];
-                        let logo1 = values[i][7] ? values[i][7] : "/images/sbc-logo.png";
-                        let logo2 = values[i][8] ? values[i][8] : "/images/sbc-logo.png";
+                        let logo1 = values[i][7] ? values[i][7] : "/images/sbc-logo.png"; // Logo URL or default
+                        let logo2 = values[i][8] ? values[i][8] : "/images/sbc-logo.png"; // Logo URL or default
     
                         let gameCard = `
                             <div class="game-card mb-5">
@@ -291,9 +290,7 @@
                                     </div>
                                 </div>
                                 <div class="scores">${score1} - ${score2}</div>
-                                <div class="best-player">Best Player: 
-                                    <strong style="color:#FE9738!important;">${bestPlayer} (${points} PTS)</strong>
-                                </div>
+                                <div class="best-player">Best Player:<strong style="color:#FE9738!important;"> ${bestPlayer} (${points} PTS)</strong></div>
                             </div>
                         `;
     
@@ -303,23 +300,20 @@
                         groupedGames[gameDate].push(gameCard);
                     }
     
+                    // Append games grouped by date
                     for (let date in groupedGames) {
-                        container.innerHTML += `<h2 class="pt-5">${date}</h2>`;
-                        container.innerHTML += groupedGames[date].join("");
+                        container.append(`<h2 class="pt-5">${date}</h2>`);
+                        container.append(groupedGames[date].join(""));
                     }
-                } catch (error) {
-                    console.error("Error fetching game scores:", error);
-                }
+                });
             }
     
-            async function fetchStandings() {
-                try {
-                    let response = await fetch(standingsUrl);
-                    let data = await response.json();
+            function fetchStandings() {
+                $.getJSON(standingsUrl, function (data) {
                     let values = data.values;
-                    let container = document.getElementById("standingsContainer");
+                    let container = $("#standingsContainer");
     
-                    container.innerHTML = ""; // Clear old standings before updating
+                    container.empty(); // Clear old standings before updating
     
                     let standingsTable = `
                         <table class="standings-table">
@@ -337,13 +331,15 @@
                         let team = values[i][1];
                         let wins = values[i][2];
                         let losses = values[i][3];
-                        let logo = values[i][4] ? values[i][4] : "/images/sbc-logo.png";
+                        let logo = values[i][4] ? values[i][4] : "/images/sbc-logo.png"; // Logo URL or default
     
                         standingsTable += `
                             <tr>
                                 <td>${rank}</td>
                                 <td><img class="standings-logo" src="${logo}" alt="${team} Logo"></td>
-                                <td>${team}</td>
+                                <td>
+                                    ${team}
+                                </td>
                                 <td>${wins}</td>
                                 <td>${losses}</td>
                             </tr>
@@ -351,19 +347,16 @@
                     }
     
                     standingsTable += `</table>`;
-                    container.innerHTML = standingsTable;
-                } catch (error) {
-                    console.error("Error fetching standings:", error);
-                }
+                    container.append(standingsTable);
+                });
             }
     
             fetchScores(); // Fetch game scores on page load
             fetchStandings(); // Fetch standings on page load
-            // setInterval(fetchScores, 30000); // Auto-refresh scores every 30 sec
-            // setInterval(fetchStandings, 30000); // Auto-refresh standings every 30 sec
+            setInterval(fetchScores, 30000); // Auto-refresh scores every 30 sec
+            setInterval(fetchStandings, 30000); // Auto-refresh standings every 30 sec
         });
     </script>
-    
     
       
   </body>
