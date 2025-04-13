@@ -23,7 +23,7 @@ let teamLogos = {};
 // Create a map of team names to logo URLs from Standings sheet
 for (let i = 1; i < standingsValues.length; i++) {
     let teamName = standingsValues[i][1]; // Column B: Team Name
-    let logoUrl = standingsValues[i][4] ? standingsValues[i][4] : "/images/472713882_122133885638496668_2194305492471167213_n.jpg"; // Column E: Logo URL
+    let logoUrl = standingsValues[i][4] ? standingsValues[i][4] : "/images/sbc-logo.png"; // Column E: Logo URL
     teamLogos[teamName] = logoUrl;
 }
 
@@ -54,8 +54,8 @@ for (let i = 1; i < values.length; i++) {
     }
 
     let dateObj = new Date(gameDate);
-    let logo1 = teamLogos[team1] || "/images/472713882_122133885638496668_2194305492471167213_n.jpg";
-    let logo2 = teamLogos[team2] || "/images/472713882_122133885638496668_2194305492471167213_n.jpg";
+    let logo1 = teamLogos[team1] || "/images/sbc-logo.png";
+    let logo2 = teamLogos[team2] || "/images/sbc-logo.png";
 
     let scoresHTML = "";
 if (score1 !== "" && score2 !== "") {
@@ -164,7 +164,7 @@ async function fetchStandings() {
 
         for (let i = 0; i < rows.length; i++) {
             let [_, team, wins, losses, logo] = rows[i];
-            logo = logo || "/images/472713882_122133885638496668_2194305492471167213_n.jpg";
+            logo = logo || "/images/sbc-logo.png";
 
             standingsTable += `
                 <tr>
