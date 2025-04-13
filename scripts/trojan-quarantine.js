@@ -48,7 +48,8 @@ for (let i = 1; i < values.length; i++) {
     let points = values[i][9];    // Column J: Points
 
     // **Skip incomplete rows**
-    if (!gameDate || !team1 || !team2 || score1 === undefined || score2 === undefined) {
+    // if (!gameDate || !team1 || !team2 || score1 === undefined || score2 === undefined) {
+    if (!gameDate || !team1 || !team2) {
         console.warn(`Skipping incomplete row at index ${i}:`, values[i]);
         continue;
     }
