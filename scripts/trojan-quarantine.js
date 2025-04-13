@@ -1,10 +1,10 @@
-window.addEventListener('scroll', function() {
-    const parallax = document.querySelector('.parallax');
-    const scrollPosition = window.scrollY;
+// window.addEventListener('scroll', function() {
+//     const parallax = document.querySelector('.parallax');
+//     const scrollPosition = window.scrollY;
     
-    // Adjust the background position based on scroll position
-    parallax.style.backgroundPositionY = `${scrollPosition * 0.5}px`; // Adjust the multiplier for speed
-});
+//     // Adjust the background position based on scroll position
+//     parallax.style.backgroundPositionY = `${scrollPosition * 0.5}px`; // Adjust the multiplier for speed
+// });
 document.addEventListener("DOMContentLoaded", function () {
     let sheetID = "1Hq6V4Rh8Jga4OomZsIMUYkNuKiRMwzP4ufzNsLN2JRA"; 
     let apiKey = "AIzaSyDIUxdcZMFwg_RwRc-vF5C5uEAt_xn9gu0";  
@@ -46,6 +46,11 @@ for (let i = 1; i < values.length; i++) {
     let gameType = values[i][7] || "Regular Season"; // Column H (index 7): Game Type
     let bestPlayer = values[i][8];// Column I: Best Player
     let points = values[i][9];    // Column J: Points
+    let notes = values[i][10]; // Column K (index 10): Notes
+    let notesHTML = "";
+    if (notes) {
+        notesHTML = `<div class="game-notes" style="margin-top:4px;"><em style="color:#FE9738!important">${notes}</em></div>`;
+    }
 
     // **Skip incomplete rows**
     // if (!gameDate || !team1 || !team2 || score1 === undefined || score2 === undefined) {
@@ -87,6 +92,7 @@ let gameCard = `
         </div>
         ${scoresHTML}
         ${bestPlayerHTML}
+        ${notesHTML}
     </div>
 `;
 
