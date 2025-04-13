@@ -123,7 +123,7 @@ games.forEach(game => {
 
     // Add date heading if it's a new date
     if (game.gameDate !== lastDate) {
-        container.innerHTML += `<h4 class="game-date pt-4">${game.gameDate}</h4>`;
+        container.innerHTML += `<h4 class="game-date pt-5">${game.gameDate}</h4>`;
         lastDate = game.gameDate;
     }
 
